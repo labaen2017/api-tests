@@ -32,3 +32,20 @@ print(response.url)            # see the URL that requests built!
 print(response.status_code)
 posts = response.json()
 print(len(posts))
+
+new_post = {"title": "My first post", "body": "Hello API", "userId": 1}
+response = requests.post(f"{BASE_URL}/posts", json=new_post)
+print(response.status_code)
+print(response.json())
+
+
+# PUT: replace post 1
+updated_post = {"id": 1, "title": "Updated title", "body": "New body", "userId": 1}
+response = requests.put(f"{BASE_URL}/posts/1", json=updated_post)
+print("PUT status:", response.status_code)
+print("PUT body:", response.json())
+
+# DELETE: delete post 1
+response = requests.delete(f"{BASE_URL}/posts/1")
+print("DELETE status:", response.status_code)
+print("DELETE body:", response.json())
