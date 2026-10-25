@@ -24,3 +24,21 @@ def test_get_all_posts_returns_100():
     posts = response.json()
     assert isinstance(posts, list)
     assert len(posts) == 100
+
+def test_filter_posts_by_user():
+    response = requests.get(f"{BASE_URL}/posts", params={"userId": 1})
+    assert response.status_code == 200      # ← first
+    posts = response.json()
+    assert isinstance(posts, list)
+    assert len(posts) == 10
+    for post in posts:
+        assert post["userId"] == 1
+
+def test_filter_by_unknown_user_returns_empty_list():
+    response = requests.get(f"{BASE_URL}/posts", params={"userId": 999})
+    assert response.status_code == 200  
+    assert response.json() == []  
+
+def test_unknown_endpoint_returns_404():
+    response = requests.get(f"{BASE_URL}/banana")
+    assert response.status_code == 404
