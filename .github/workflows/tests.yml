@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: Get the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.14"
 
@@ -25,8 +25,15 @@ jobs:
 
       - name: Run smoke tests
         if: github.event_name == 'push'
-        run: pytest -v -m smoke
+        run: pytest -v -m smoke --html=report.html --self-contained-html
 
       - name: Run all tests
         if: github.event_name != 'push'
-        run: pytest -v
+        run: pytest -v --html=report.html --self-contained-html
+
+      - name: Save the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: report.html
