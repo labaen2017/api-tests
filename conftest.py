@@ -1,4 +1,5 @@
 import pytest
+from api_client import ApiClient
 
 BASE_URL = "https://jsonplaceholder.typicode.com"
 
@@ -15,3 +16,7 @@ def new_post():
 @pytest.fixture
 def updated_post():
     return {"title": "Updated title", "body": "Updated post body", "userId": 1}
+
+@pytest.fixture
+def api(base_url):
+    return ApiClient(base_url)
