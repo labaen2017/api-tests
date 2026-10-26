@@ -15,11 +15,13 @@ def test_posts_per_user(base_url, user_id, expected_count):
     for post in posts:
         assert post["userId"] == user_id
 
+@pytest.mark.smoke
 def test_get_user_has_email(base_url):
     response = requests.get(f"{base_url}/users/1")
     assert response.status_code == 200
     assert response.json()["email"] == "Sincere@april.biz"
 
+@pytest.mark.smoke
 def test_get_all_posts_returns_100(base_url):
     response = requests.get(f"{base_url}/posts")
     assert response.status_code == 200
@@ -31,6 +33,7 @@ def test_unknown_endpoint_returns_404(base_url):
     response = requests.get(f"{base_url}/banana")
     assert response.status_code == 404
 
+@pytest.mark.smoke
 def test_create_post_returns_sent_data_and_id(base_url, new_post):
     response = requests.post(f"{base_url}/posts", json=new_post)
     assert response.status_code == 201
@@ -69,6 +72,7 @@ def test_get_non_existing_post_returns_404(base_url,npost_id):
     response = requests.get(f"{base_url}/posts/{npost_id}")
     assert response.status_code == 404
 
+@pytest.mark.smoke
 def test_post_response_is_json(base_url):
     response = requests.get(f"{base_url}/posts/1", timeout=5)
     assert response.status_code == 200
@@ -91,6 +95,8 @@ def test_post_fields_have_correct_types(base_url):
     assert isinstance(post["title"], str)
     assert isinstance(post["body"], str)
 
+@pytest.mark.slow
 def test_slow_server_times_out():
     with pytest.raises(requests.exceptions.ReadTimeout):
         requests.get("https://httpbin.org/delay/3", timeout=1)
+
