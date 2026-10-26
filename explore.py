@@ -1,3 +1,4 @@
+import pytest
 import requests
 
 BASE_URL = "https://jsonplaceholder.typicode.com"
@@ -55,3 +56,12 @@ print(response.headers)
 print(response.headers["Content-Type"])
 print(response.elapsed.total_seconds())
 print(response.headers["content-type"])
+
+# The server waits 3 seconds before answering
+response = requests.get("https://httpbin.org/delay/3", timeout=10)
+print("Waited:", response.elapsed.total_seconds())
+
+# Now give up after 1 second
+response = requests.get("https://httpbin.org/delay/3", timeout=1)
+print("You will not see this line")
+

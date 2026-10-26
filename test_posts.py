@@ -90,3 +90,7 @@ def test_post_fields_have_correct_types(base_url):
     assert isinstance(post["userId"], int)
     assert isinstance(post["title"], str)
     assert isinstance(post["body"], str)
+
+def test_slow_server_times_out():
+    with pytest.raises(requests.exceptions.ReadTimeout):
+        requests.get("https://httpbin.org/delay/3", timeout=1)
