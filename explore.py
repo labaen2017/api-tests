@@ -1,6 +1,6 @@
 import requests
 
-from test_posts import BASE_URL
+BASE_URL = "https://jsonplaceholder.typicode.com"
 
 response = requests.get("https://jsonplaceholder.typicode.com/posts/1")
 print("status code:", response.status_code)
@@ -49,3 +49,9 @@ print("PUT body:", response.json())
 response = requests.delete(f"{BASE_URL}/posts/1")
 print("DELETE status:", response.status_code)
 print("DELETE body:", response.json())
+
+response = requests.get(f"{BASE_URL}/posts/1")
+print(response.headers)
+print(response.headers["Content-Type"])
+print(response.elapsed.total_seconds())
+print(response.headers["content-type"])

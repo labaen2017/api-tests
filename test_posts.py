@@ -68,3 +68,25 @@ def test_get_existing_posts_return_200(base_url,post_id):
 def test_get_non_existing_post_returns_404(base_url,npost_id):
     response = requests.get(f"{base_url}/posts/{npost_id}")
     assert response.status_code == 404
+
+def test_post_response_is_json(base_url):
+    response = requests.get(f"{base_url}/posts/1", timeout=5)
+    assert response.status_code == 200
+    assert "application/json" in response.headers["Content-Type"]
+
+
+def test_post_response_is_fast(base_url):
+    response = requests.get(f"{base_url}/posts/1", timeout=5)
+    assert response.status_code == 200
+    assert response.elapsed.total_seconds() < 2
+
+
+def test_post_fields_have_correct_types(base_url):
+    response = requests.get(f"{base_url}/posts/1", timeout=5)
+    assert response.status_code == 200
+    
+    post = response.json()
+    assert isinstance(post["id"], int)
+    assert isinstance(post["userId"], int)
+    assert isinstance(post["title"], str)
+    assert isinstance(post["body"], str)
