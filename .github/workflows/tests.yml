@@ -3,6 +3,9 @@ name: API tests
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
 
 jobs:
   test:
@@ -20,5 +23,10 @@ jobs:
       - name: Install packages
         run: pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Run smoke tests
+        if: github.event_name == 'push'
+        run: pytest -v -m smoke
+
+      - name: Run all tests
+        if: github.event_name != 'push'
         run: pytest -v
