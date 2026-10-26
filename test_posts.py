@@ -30,7 +30,7 @@ def test_get_all_posts_returns_100(api):
     assert response.status_code == 200
     posts = response.json()
     assert isinstance(posts, list)
-    assert len(posts) == 99
+    assert len(posts) == 100
 
 
 def test_unknown_endpoint_returns_404(api):
