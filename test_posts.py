@@ -1,4 +1,15 @@
 import requests
+import pytest
+
+@pytest.mark.parametrize("user_id, expected_count",[
+    (1, 10),
+    (2, 10),
+    (999, 0),
+])
+def test_posts_per_user(base_url, user_id, expected_count):
+    response = requests.get(f"{base_url}/posts", params={"userId": user_id})
+    assert response.status_code == 200
+    assert len(response.json()) == expected_count
 
 def test_get_post_has_correct_id(base_url):
     response = requests.get(f"{base_url}/posts/1")
@@ -61,3 +72,23 @@ def test_create_post_returns_201(base_url, new_post):
     response = requests.post(f"{base_url}/posts", json=new_post)
     assert response.status_code == 201
 
+@pytest.mark.parametrize("post_id",[
+    (1),
+    (50),
+    (100),
+])
+def test_get_existing_posts_return_200(base_url,post_id):
+    response = requests.get(f"{base_url}/posts/{post_id}")
+    assert response.status_code == 200
+    assert response.json()["id"] == post_id
+
+
+@pytest.mark.parametrize("npost_id",[
+    (0),
+    (-1),
+    (101),
+    (9999),
+])
+def test_get_non_existing_post_returns_404(base_url,npost_id):
+    response = requests.get(f"{base_url}/posts/{npost_id}")
+    assert response.status_code == 404
