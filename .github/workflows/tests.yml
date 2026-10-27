@@ -3,6 +3,8 @@ name: API tests
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   schedule:
     - cron: "30 3 * * *"
   workflow_dispatch:
@@ -24,11 +26,6 @@ jobs:
 
       - name: Install packages
         run: pip install -r requirements.txt
-
-      - name: Check secret
-        run: echo "Token is $API_TOKEN"
-        env:
-          API_TOKEN: ${{ secrets.API_TOKEN }}
 
       - name: Run smoke tests
         if: github.event_name == 'push'
