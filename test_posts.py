@@ -99,3 +99,8 @@ def test_post_fields_have_correct_types(api):
 def test_slow_server_times_out():
     with pytest.raises(requests.exceptions.ReadTimeout):
      requests.get("https://httpbin.org/delay/3", timeout=1)
+
+def test_post_has_5_comments(api):
+    response = api.get("/posts/1/comments")
+    assert response.status_code == 200
+    assert len(response.json()) == 5
