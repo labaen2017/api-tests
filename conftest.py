@@ -1,5 +1,9 @@
+
+import os
 import pytest
 from api_client import ApiClient
+
+BASE_URL = os.environ.get("BASE_URL", "https://jsonplaceholder.typicode.com")
 
 BASE_URL = "https://jsonplaceholder.typicode.com"
 
